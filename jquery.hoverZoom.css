@@ -5,20 +5,11 @@ ul.thumb li img { padding: 0px; position: absolute; -ms-interpolation-mode: bicu
 ul.thumb li img.hover {border: none; }
 ul.thumb li .loading{position: absolute; }
 
-<<<<<<< HEAD:jquery.hoverZoom.css
 .gallerycaption{
     position:absolute;
     font-weight:600;
     padding-top: 10px;
     text-align:center;
-=======
-.gallerytitle{
-    position:absolute;
-    margin-top:0px;
-    font-weight:600;
-    text-align:center;
-    font-family: Arial, Helvetia, sans-serif;
->>>>>>> 3e3879dfd3950c753279a5d9e93e945cf43bb245:jquery.hoverZoom.css
     font-size: 13px;
     overflow: hidden;
     height: 2.4em;
@@ -31,12 +22,7 @@ ul.thumb li .loading{position: absolute; }
     -moz-box-shadow: 5px 5px 35px #000000;
     box-shadow: -5px -5px 15px #000000;
     border: 10px solid white;
-<<<<<<< HEAD:jquery.hoverZoom.css
     /*background: white;*/
-=======
-    background: white;
-    /*border-right: 20px solid white !important;*/
->>>>>>> 3e3879dfd3950c753279a5d9e93e945cf43bb245:jquery.hoverZoom.css
 }
 .loading{
     width: 32px !important;
