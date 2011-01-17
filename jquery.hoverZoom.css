@@ -1,0 +1,59 @@
+ul.thumb, .thumb  {float: left;list-style: none;margin: 0;  }
+ul.thumb a img{border: 0;}
+ul.thumb li {margin: 0; float: left; position: relative; margin: 0px 10px 10px 0px; width: 100px; height: 100px}
+ul.thumb li img { padding: 0px; position: absolute; -ms-interpolation-mode: bicubic; width: 100px; height: 100px}
+ul.thumb li img.hover {border: none; }
+ul.thumb li .loading{position: absolute; }
+
+<<<<<<< HEAD:jquery.hoverZoom.css
+.gallerycaption{
+    position:absolute;
+    font-weight:600;
+    padding-top: 10px;
+    text-align:center;
+=======
+.gallerytitle{
+    position:absolute;
+    margin-top:0px;
+    font-weight:600;
+    text-align:center;
+    font-family: Arial, Helvetia, sans-serif;
+>>>>>>> 3e3879dfd3950c753279a5d9e93e945cf43bb245:jquery.hoverZoom.css
+    font-size: 13px;
+    overflow: hidden;
+    height: 2.4em;
+    display: none;
+    background: white;
+}
+
+.zoomed {
+    -webkit-box-shadow: -5px -5px 35px #000000;
+    -moz-box-shadow: 5px 5px 35px #000000;
+    box-shadow: -5px -5px 15px #000000;
+    border: 10px solid white;
+<<<<<<< HEAD:jquery.hoverZoom.css
+    /*background: white;*/
+=======
+    background: white;
+    /*border-right: 20px solid white !important;*/
+>>>>>>> 3e3879dfd3950c753279a5d9e93e945cf43bb245:jquery.hoverZoom.css
+}
+.loading{
+    width: 32px !important;
+    height: 32px !important;
+}
+.zoomContainer{
+    position: absolute;
+}
+
+.zoomContainer img{
+    /*position: relative !important;*/
+    left: 0;
+    top: 0;
+}
+
+.trigger{
+    position: absolute !important;
+}
+.trigger img{
+}
