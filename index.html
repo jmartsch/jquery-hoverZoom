@@ -1,0 +1,130 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>jQuery hoverZoom - a lightbox and gallery alternative</title>
+    <meta name="description" content="A lightbox and gallery alternative for jQuery">
+    <meta name="author" content="Jens Martsch">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link  href="//fonts.googleapis.com/css?family=Cabin:bold" rel="stylesheet" type="text/css" >
+
+    <link rel="stylesheet" href="css/style.css?v=2">
+
+    <link rel="stylesheet" href="jquery.hoverZoom.css">
+</head>
+
+<body>
+    <div id="container">
+        <header>
+            <h1>jQuery hoverZoom </h1>
+            <h2>a lightbox and gallery alternative</h2>
+        </header>
+
+        <div id="main" class="clearfix">
+            <h2>The demo</h2>
+            <p>Actions speak louder than words. So here is what you get (just hover over the images):</p>
+            <ul class="thumb">
+                <li><a href="images/1.jpg"><img alt="Images can have captions" src="images/1_thumb.jpg" /></a></li>
+                <li class="noborder"><a href="images/2.jpg"><img alt="Can be styled with css" src="images/2_thumb.jpg" /></a></li>
+                <li class="redshadow"><a href="images/3.jpg"><img src="images/3_thumb.jpg" alt="images are scaled to fit into the viewport" /></a></li>
+                <li><a href="images/bigimage.jpg"><img src="images/bigimage_thumb.jpg" alt="Images are preloaded and then the animation starts"/></a></li>
+                <li><a href="images/5.jpg"><img src="images/5_thumb.jpg" /></a></li>
+                <li><a href="images/6.jpg"><img src="images/6_thumb.jpg" /></a></li>
+                <li><a href="images/7.jpg"><img src="images/7_thumb.jpg" /></a></li>
+            </ul>
+            <br clear="all" />
+            <h2>The story</h2>
+            <p>One day i stumbled across <a href="http://www.sohtanaka.com/web-design/fancy-thumbnail-hover-effect-w-jquery/" target="_blank">http://www.sohtanaka.com/web-design/fancy-thumbnail-hover-effect-w-jquery/</a> and i liked the effect of the zooming images.
+                But it has one big downside: When a zoomed image covers another thumbnail you can´t zoom that thumbnail. So i took my own attemp to create a jquery plugin that fixes this issue.
+            </p>
+            <h2>Features</h2>
+            <ul>
+                <li>No need to click. Just hover over the images to enlarge them</li>
+                <li>Animation of the image. No whitescreen as in most lightboxes</li>
+                <li>Support for image captions via alt attribute</li>
+                <li>Centering images in viewport</li>
+                <li>Scale image to fit in viewport</li>
+                <li>Options to control speed of animations</li>
+                <li>complete control of the style with css</li>
+                <li>10 KB minified</li>
+                <li>hoverIntent included and optional</li>
+                <li>Debugging messages in Firebug</li>
+                <li>Free and Open Source</li>
+            </ul>
+            <h2>Features</h2>
+            <ul>
+                <li>Firefox 3.6+</li>
+                <li>IE 6.0 +</li>
+                <li>Safari</li>
+            </ul>
+
+            <h2>Dependencies</h2>
+            <p>jQuery 1.4+</p>
+
+            <h2>Download</h2>
+            <p>
+                git clone git://github.com/jmar/jquery-hoverZoom.git
+            </p>
+            <p>or download it from <a href="https://github.com/jmar/jquery-hoverZoom">https://github.com/jmar/jquery-hoverZoom</a></p>
+            <h2>Usage</h2>
+                <pre>
+                    &lt;ul class="thumb">
+                        &lt;li>&lt;a href="fullSizeImage.jpg" />&lt;img src="thumbnail.jpg" />&lt;/a>&lt;/li>
+                        &lt;li>&lt;a href="fullSizeImage2.jpg" />&lt;img src="thumbnail2.jpg" />&lt;/a>&lt;/li>
+                        &lt;li>&lt;a href="fullSizeImage3.jpg" />&lt;img src="thumbnail3.jpg" />&lt;/a>&lt;/li>
+                    &lt;/ul>
+
+                    &lt;script type="text/javascript">
+                        $(document).ready(function(){
+                                $('.thumb img').hoverZoom();
+                        });
+                    &lt;/script>
+                </pre>
+
+            <h2>Options</h2>
+            <p>
+                <dl>
+                    <dt>speedView (<strong>600</strong>)</dt><dd>A number determining how long the zoom in animation will run.</dd>
+                    <dt>speedRemove(<strong>400</strong>)</dt><dd>A number determining how long the zoom out animation will run.</dd>
+                    <dt>showCaption (<strong>true</strong> | false)</dt><dd>A boolean determining if captions should be displayed.</dd>
+                    <dt>speedCaption (<strong>800</strong>)</dt><dd>A number determining how long the zoom in animation for captions will run.</dd>
+                    <dt>debug (<strong>true</strong> | false)</dt><dd>A boolean determining if debugging messages should be send to a console.</dd>
+                    <dt>loadingIndicator (<strong>ajax-loader.gif</strong>)</dt><dd>Path to an loadingIndicator image.</dd>
+                    <dt>easing (swing|linear|<strong>easeOutQuint</strong>)</dt>A string indicating which easing function to use for the animation. Supports the easing plugin<dd></dd>
+                    <dt>captionHeight(<strong>32</strong>)</dt><dd>A number determining the height of the caption</dd>
+                    <dt>hoverIntent (<strong>true</strong> | false)</dt><dd>A boolean determining whether to use the integrated hoverIntent Plugin or not.</dd>
+                </dl>
+            <h2>Bugs/Issues</h2>
+            <p>
+                Something not functioning as aspected? Please <a href="https://github.com/jmar/jquery-hoverZoom/issues">file a bug</a>
+            </p>
+        </div>
+
+        <footer>
+
+        </footer>
+    </div> <!-- end of #container -->
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.js"></script>
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.4.4.js"%3E%3C/script%3E'))</script>
+    <script src="js/modernizr-1.6.min.js"></script>
+    <script src="jquery.hoverZoom.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+                $('.thumb img').hoverZoom({speedView:600,speedRemove:400,showCaption:true,speedCaption:800,debug:true,hoverIntent: true});
+        });
+    </script>
+</body>
+</html>
