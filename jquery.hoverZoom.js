@@ -1,9 +1,13 @@
 (function($) {
 /**
 * hoverZoom // jQuery 1.4+
-* demoURL
+* demoURL: https://github.com/jmar/jquery-hoverZoom
 *
 * @author    Jens Martsch <jmartsch@gmail.com>
+* Copyright 2010 by Jens Martsch
+* Licensed under the MIT license:
+* http://creativecommons.org/licenses/MIT/
+*
 */
 
 
@@ -27,14 +31,59 @@
     });
 
     var log = function(message,type){
-	    if (typeof console != "undefined" && typeof console.debug != "undefined" && opts.debug === true) {
-		if (!type) console.log(message);
-		else if (type == 'info') console.info(message);
-	    } else {
-		// for IE we could alert the logging messages (or use companion.js to support a console)
-		//alert(s)
-	    }
+	if (typeof console != "undefined" && typeof console.debug != "undefined" && opts.debug === true) {
+	    if (!type) console.log(message);
+	    else if (type == 'info') console.info(message);
+	} else {
+	    // for IE we could alert the logging messages (or use companion.js to support a console)
+	    //alert(s)
 	}
+    }
+
+    // Codeparts taken from modernizr library, to test support for backgroundSize property
+    /**
+     * Create our "modernizr" element that we do most feature tests on.
+     */
+    mod = 'modernizr',
+    m = document.createElement( mod ),
+    m_style = m.style,
+    domPrefixes = 'Webkit Moz O ms Khtml'.split(' '),
+    prefixes = ' -webkit- -moz- -o- -ms- -khtml- '.split(' ');
+
+    /**
+     * contains returns a boolean for if substr is found within str.
+     */
+    function contains( str, substr ) {
+        return (''+str).indexOf( substr ) !== -1;
+    }
+
+    /**
+     * test_props is a generic CSS / DOM property test; if a browser supports
+     *   a certain property, it won't return undefined for it.
+     *   A supported CSS property returns empty string when its not yet set.
+     */
+    function test_props( props ) {
+
+        for ( var i in props ) {
+            if ( m_style[ props[i] ] !== undefined ) {
+		return [props[i],prefixes[i]];
+            }
+        }
+    }
+
+    /**
+     * test_props_all tests a list of DOM properties we want to check against.
+     *   We specify literally ALL possible (known and/or likely) properties on
+     *   the element including the non-vendor prefixed one, for forward-
+     *   compatibility.
+     */
+    function test_props_all( prop ) {
+        var uc_prop = prop.charAt(0).toUpperCase() + prop.substr(1);
+	props   = (prop + ' ' + domPrefixes.join(uc_prop + ' ') + uc_prop).split(' ');
+        return test_props( props );
+    };
+
+    var bgSizeSupported = test_props_all( 'backgroundSize' );
 
     var methods = {
 	init: function(options){
@@ -176,6 +225,27 @@
 
 	    $.fn.hoverZoom('centerImage', original,zoomContainer,dimensions[2],dimensions[3]);
 
+	    newwidth = dimensions[0]  +'px';
+	    newheight = dimensions[1]  +'px';
+	    newdimensions = newwidth + ' ' + newheight;
+
+	    // for supported browsers instead of scaling the original image, we use a background-image with background-size scaling
+	    // to let the zoom animation run smoother ()
+
+	    // check if background-size is supported
+
+	    if (bgSizeSupported) {
+
+		property = "'"+ bgSizeSupported[1]+'background-size'+"'";
+		window.console.log(property);
+		//property = trim('-moz-background-size');
+
+		//eval (zoomContainer.get(0).style.bgSizeSupported[0]) = '200px 50px';
+		//zoomContainer.get(0).style.bgSizeSupported[0] = '200px 50px';
+		zoomContainer.css({'background-image':'url('+original.largeImgSrc+')',property: '200px 50px','background-repeat':'no-repeat'});
+		original.hide();
+	    }
+
 	    zoomContainer.css({'z-index': '100'}).stop(true,false).animate({
 		top: original.data('itemTop'),
 		left: original.data('itemLeft'),
@@ -183,14 +253,23 @@
 		height: dimensions[1] + 'px',
 		marginTop: original.data('marginTop') + 'px',
 		marginLeft: original.data('marginLeft') + 'px'
-	    }, opts.speedView+20,opts.easing);
-
-	    original.css({'z-index': '105'}).stop(true,false).animate({
-		width: dimensions[0] +'px',
-		height: dimensions[1] + 'px'
-	    }, opts.speedView,opts.easing,function(){
+	    }, opts.speedView+20,opts.easing,function(){
 		if(caption.text() != '' && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
 	    });
+
+	    if (!bgSizeSupported){
+		original.css({'z-index': '105'}).css({
+		    width: dimensions[0] +'px',
+		    height: dimensions[1] + 'px'
+		});
+	    }
+
+	//    original.css({'z-index': '105'}).stop(true,false).animate({
+	//	width: dimensions[0] +'px',
+	//	height: dimensions[1] + 'px'
+	//    }, opts.speedView,opts.easing,function(){
+	//	if(caption.text() != '' && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
+	//    });
 	},
 	showCaption: function(zoomContainer,dimensions){
 	    var captionpos;
@@ -300,13 +379,14 @@
 		width: original.data('originalWidth'),
 		height: original.data('originalHeight')
 	    }, opts.speedRemove,opts.easing,function(){
-		//original.fadeIn('slow');
+		original.fadeIn();
 		//original.get(0).src = originalSrc;
 		// reset z-index of parental li (fix for IE 6-7)
 		if (original.closest('li').css('z-index') == 100) {
 		    original.closest('li').css({'z-index': '0'});
 		};
 	    });
+
 
 	    original.css({'z-index': '0'}).stop(true,false).animate({
 		marginTop: '0',

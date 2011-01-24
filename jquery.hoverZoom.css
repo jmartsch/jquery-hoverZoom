@@ -30,6 +30,7 @@ ul.thumb li .loading{position: absolute; }
 }
 .zoomContainer{
     position: absolute;
+    background-repeat: no-repeat;
 }
 
 .zoomContainer img{
