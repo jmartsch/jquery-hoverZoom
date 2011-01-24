@@ -1,10 +1,14 @@
 (function($) {
 /**
 * hoverZoom // jQuery 1.4+
-* demoURL
+* demoURL https://github.com/jmar/jquery-hoverZoom
 *
 * @author    Jens Martsch <jmartsch@gmail.com>
-*/
+* Copyright 2010 by Jens Martsch
+* Licensed under the MIT license:
+* http://creativecommons.org/licenses/MIT/
+*
+**/
 
 
 /**
