@@ -84,6 +84,7 @@
 		    zoomContainer.css('width',original.data('originalWidth')+'px');
 		    zoomContainer.css('height', original.data('originalHeight')+'px');
 		    zoomContainer = original.parent().parent();
+		    original.addClass('original');
                 }
 
 		var alt = original.attr('alt');
