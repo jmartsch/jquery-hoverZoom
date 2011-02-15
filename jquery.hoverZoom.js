@@ -84,7 +84,7 @@
     };
 
     var bgSizeSupported = test_props_all( 'backgroundSize' );
-
+    //window.console.log(bgSizeSupported);
     var methods = {
 	init: function(options){
 	    var largeImg = false, caption;
@@ -237,12 +237,12 @@
 	    if (bgSizeSupported) {
 
 		property = "'"+ bgSizeSupported[1]+'background-size'+"'";
-		window.console.log(property);
+		//window.console.log(property);
 		//property = trim('-moz-background-size');
 
 		//eval (zoomContainer.get(0).style.bgSizeSupported[0]) = '200px 50px';
-		//zoomContainer.get(0).style.bgSizeSupported[0] = '200px 50px';
-		zoomContainer.css({'background-image':'url('+original.largeImgSrc+')',property: '200px 50px','background-repeat':'no-repeat'});
+		zoomContainer.get(0).style.backgroundSize = '400px 150px';
+		zoomContainer.css({'background-image':'url('+original.largeImgSrc+')','background-repeat':'no-repeat'});
 		original.hide();
 	    }
 
