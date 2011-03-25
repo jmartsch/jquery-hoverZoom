@@ -229,21 +229,32 @@
 	    newheight = dimensions[1]  +'px';
 	    newdimensions = newwidth + ' ' + newheight;
 
-	    // for supported browsers instead of scaling the original image, we use a background-image with background-size scaling
-	    // to let the zoom animation run smoother ()
-
-	    // check if background-size is supported
+	    // to let the zoom animation run smoother
+            // instead of scaling the original image, we use a background-image with background-size scaling
+	    // for supported browsers 
 
 	    if (bgSizeSupported) {
-
+                
 		property = "'"+ bgSizeSupported[1]+'background-size'+"'";
-		//window.console.log(property);
-		//property = trim('-moz-background-size');
 
-		//eval (zoomContainer.get(0).style.bgSizeSupported[0]) = '200px 50px';
-		zoomContainer.get(0).style.backgroundSize = '400px 150px';
-		zoomContainer.css({'background-image':'url('+original.largeImgSrc+')','background-repeat':'no-repeat'});
+                bgSize = dimensions[0]+'px '+dimensions[1]+'px';
+		//zoomContainer.get(0).style.backgroundSize = dimensions[0]+'px '+dimensions[1]+'px';
+		zoomContainer.css({
+                    'background-image':'url('+original.largeImgSrc+')',
+                    'background-repeat':'no-repeat',
+                    '-moz-background-size': bgSize,
+                    '-webkit-background-size': bgSize,
+                    '-o-background-size': bgSize,
+                    'background-size': bgSize,
+                    });
 		original.hide();
+	    }
+            
+            if (!bgSizeSupported){
+		original.css({'z-index': '105'}).css({
+		    width: dimensions[0] +'px',
+		    height: dimensions[1] + 'px'
+		});
 	    }
 
 	    zoomContainer.css({'z-index': '100'}).stop(true,false).animate({
@@ -257,12 +268,7 @@
 		if(caption.text() != '' && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
 	    });
 
-	    if (!bgSizeSupported){
-		original.css({'z-index': '105'}).css({
-		    width: dimensions[0] +'px',
-		    height: dimensions[1] + 'px'
-		});
-	    }
+	    
 
 	//    original.css({'z-index': '105'}).stop(true,false).animate({
 	//	width: dimensions[0] +'px',
