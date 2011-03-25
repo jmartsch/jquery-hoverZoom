@@ -326,22 +326,25 @@
 	    // and assign it´s height
 	    var tt = caption.text()
 	    var captionAdd = 0;
+            var captionHeight;
+            var maxWidth;
+            var maxHeight;
 
-	    if(tt == '')  var captionHeight = 0;
+	    if(tt == '')  captionHeight = 0;
 	    else{
-		var captionHeight = caption.outerHeight();
-		var captionAdd = bh/2;
+		captionHeight = caption.outerHeight();
+		captionAdd = bh/2;
 	    }
 
 	    if (imageProportion > winProportion) {
 		// calculate max width based on page width
-		var maxWidth = viewport[0] - bw * 2 - opts.breathingSize * 2;
-		var maxHeight = Math.round(maxWidth / imageProportion);
+		maxWidth = viewport[0] - bw * 2 - opts.breathingSize * 2;
+		maxHeight = Math.round(maxWidth / imageProportion);
 		log('calculate max width based on page width');
 	    } else {
 		// calculate max height base on page height
-		var maxHeight = viewport[1] - captionHeight - bh - captionAdd;
-		var maxWidth = Math.round(maxHeight * imageProportion);
+		maxHeight = viewport[1] - captionHeight - bh - captionAdd;
+		maxWidth = Math.round(maxHeight * imageProportion);
 		log('calculate max height based on page height');
 	    }
 
