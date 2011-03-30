@@ -98,7 +98,7 @@
 		loadingIndicator : 'ajax-loader.gif',
 		easing: 'easeOutQuint',
 		captionHeight: 32,
-		breathingSize: 20,
+		breathingSize: 40,
 		hoverIntent: true
 	    };
 	    opts = $.extend(defaults, options);
@@ -216,14 +216,14 @@
 	    original.data('marginLeft', - triggerPos.left);
 	    original.data('marginTop', - triggerPos.top);
 
-	    // set z-index of parental element
+	    // set z-index of parent element
 	    // because IE 6-7 create a new stacking context on positioned elements
 	    // see http://therealcrisp.xs4all.nl/meuk/IE-zindexbug.html
 	    if (original.closest('li').css('z-index') == 0) {
 		original.closest('li').css({'z-index': '100'});
 	    };
 
-	    $.fn.hoverZoom('centerImage', original,zoomContainer,dimensions[2],dimensions[3]);
+	    $.fn.hoverZoom('centerImage', original,zoomContainer,dimensions);
 
 	    newwidth = dimensions[0]  +'px';
 	    newheight = dimensions[1]  +'px';
@@ -301,13 +301,14 @@
 	    $('body').data('viewport',[$(window).width(), $(window).height(), $(document).scrollLeft(), $(document).scrollTop() ]);
 	    return [$(window).width(), $(window).height(), $(document).scrollLeft(), $(document).scrollTop() ];
 	},
-        centerImage: function(original,zoomContainer,width,height){
+        centerImage: function(original,zoomContainer,dimensions){
             // calculate left and top position of the zoomed image
 	    log('function centerImage()','info');
 	    var viewport = $('body').data('viewport');
-
-	    original.data('itemLeft', width > viewport[0] ? viewport[2] : (viewport[2] + Math.round((viewport[0] - width) / 2)));
-	    original.data('itemTop', height > viewport[1] ? viewport[3] : (viewport[3] + Math.round((viewport[1] - height) / 2)));
+            log('Viewport'+viewport);
+            
+	    original.data('itemLeft', (viewport[2] + Math.round((viewport[0] - dimensions[2] + opts.breathingSize * 2) / 2)));
+	    original.data('itemTop', (viewport[3] + Math.round((viewport[1] - dimensions[3] + opts.breathingSize * 2) / 2)));
 	    log('itemLeft: ' + original.data('itemLeft'));
 	    log('itemTop: ' + original.data('itemTop'));
         },
@@ -322,7 +323,7 @@
             // get the border width and height of the container
 	    var bw = zoomContainer.outerWidth() - zoomContainer.width();
 	    var bh = zoomContainer.outerHeight() - zoomContainer.height();
-
+            
 
 	    var imageProportion = width / height;
 	    var winProportion = viewport[0] / viewport[1];
@@ -344,7 +345,7 @@
 
 	    if (imageProportion > winProportion) {
 		// calculate max width based on page width
-		maxWidth = viewport[0] - bw * 2 - opts.breathingSize * 2;
+		maxWidth = viewport[0] - bw  - opts.breathingSize * 2;
 		maxHeight = Math.round(maxWidth / imageProportion);
 		log('calculate max width based on page width');
 	    } else {
@@ -361,9 +362,10 @@
 	    }
 
 	    log('Viewport: ' + viewport);
-	    log('maxWidth: ' + maxWidth + ', maxHeight: '+maxHeight);
-	    finalHeight = (height + bh + captionHeight + captionAdd + opts.breathingSize * 2);
+	    log('maxWidth (excluding borders): ' + maxWidth + ', maxHeight (excluding borders): '+maxHeight);
+            log('captionheight: '+captionHeight);
 	    finalWidth = (width + bw + opts.breathingSize * 2);
+            finalHeight = (height + bh + captionHeight + captionAdd + opts.breathingSize * 2);
 	    log('final width and height of the container: ' + finalWidth +',' + finalHeight);
 
 	    return [width,height,finalWidth,finalHeight];

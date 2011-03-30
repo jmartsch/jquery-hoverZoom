@@ -46,11 +46,3 @@ ul.thumb li .loading{position: absolute; }
 }
 .trigger img{
 }
-.bgimg{
-    -moz-background-size: 100% auto;
-  -webkit-background-size: 100% auto;
-  -o-background-size: 100% auto;
-  -khtml-background-size: 100% auto;
-  background-size: 100% auto;
-
-}
