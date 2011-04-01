@@ -98,7 +98,7 @@
 		loadingIndicator : 'ajax-loader.gif',
 		easing: 'easeOutQuint',
 		captionHeight: 32,
-		breathingSize: 40,
+		breathingSize: 0,
 		hoverIntent: true
 	    };
 	    opts = $.extend(defaults, options);
