@@ -37,6 +37,5 @@ Demo
 ----
 http://jmar.github.com/jquery-hoverZoom/
 
-Source Code & Download
 ----------------------
-https://github.com/blueimp/jQuery-File-Upload
+https://github.com/jmar/jquery-hoverZoom
