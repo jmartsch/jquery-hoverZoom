@@ -337,7 +337,7 @@
             var maxWidth;
             var maxHeight;
 
-	    if(tt == '')  captionHeight = 0;
+	    if(tt == '' || opts.showCaption == false)  captionHeight = 0;
 	    else{
 		captionHeight = caption.outerHeight();
 		captionAdd = bh/2;
@@ -357,15 +357,15 @@
 
 	    // if the image is larger than the viewport
 	    if (width > maxWidth || height > maxHeight) {
-	      width = maxWidth;
-	      height = maxHeight;
+                width = maxWidth;
+                height = maxHeight;
 	    }
 
 	    log('Viewport: ' + viewport);
 	    log('maxWidth (excluding borders): ' + maxWidth + ', maxHeight (excluding borders): '+maxHeight);
             log('captionheight: '+captionHeight);
 	    finalWidth = (width + bw + opts.breathingSize * 2);
-            finalHeight = (height + bh + captionHeight + captionAdd + opts.breathingSize * 2);
+            finalHeight = (height + bh  + captionHeight + captionAdd + opts.breathingSize * 2);
 	    log('final width and height of the container: ' + finalWidth +',' + finalHeight);
 
 	    return [width,height,finalWidth,finalHeight];
