@@ -1,6 +1,6 @@
 ul.thumb, .thumb  {float: left;list-style: none;margin: 0;  }
 ul.thumb a img{border: 0;}
-ul.thumb li {margin: 0; float: left; position: relative; width: 100px; height: 100px}
+ul.thumb li {margin: 0; float: left; position: relative; width: 100px; height: 100px; margin-right: 10px;}
 ul.thumb li img { padding: 0px; position: absolute; -ms-interpolation-mode: bicubic; width: 100px; height: 100px}
 ul.thumb li img.hover {border: none; }
 ul.thumb li .loading{position: absolute; }
