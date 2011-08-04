@@ -10,7 +10,6 @@
 *
 */
 
-
 /**
 * hoverIntent r5 // 2007.03.27 // jQuery 1.1.2+
 * <http://cherne.net/brian/resources/jquery.hoverIntent.html>
@@ -20,6 +19,7 @@
 * @author    Brian Cherne <brian@cherne.net>
 */
 (function($){$.fn.hoverIntent=function(f,g){var cfg={sensitivity:7,interval:100,timeout:0};cfg=$.extend(cfg,g?{over:f,out:g}:f);var cX,cY,pX,pY;var track=function(ev){cX=ev.pageX;cY=ev.pageY;};var compare=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);if((Math.abs(pX-cX)+Math.abs(pY-cY))<cfg.sensitivity){$(ob).unbind("mousemove",track);ob.hoverIntent_s=1;return cfg.over.apply(ob,[ev]);}else{pX=cX;pY=cY;ob.hoverIntent_t=setTimeout(function(){compare(ev,ob);},cfg.interval);}};var delay=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);ob.hoverIntent_s=0;return cfg.out.apply(ob,[ev]);};var handleHover=function(e){var p=(e.type=="mouseover"?e.fromElement:e.toElement)||e.relatedTarget;while(p&&p!=this){try{p=p.parentNode;}catch(e){p=this;}}if(p==this){return false;}var ev=jQuery.extend({},e);var ob=this;if(ob.hoverIntent_t){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);}if(e.type=="mouseover"){pX=ev.pageX;pY=ev.pageY;$(ob).bind("mousemove",track);if(ob.hoverIntent_s!=1){ob.hoverIntent_t=setTimeout(function(){compare(ev,ob);},cfg.interval);}}else{$(ob).unbind("mousemove",track);if(ob.hoverIntent_s==1){ob.hoverIntent_t=setTimeout(function(){delay(ev,ob);},cfg.timeout);}}};return this.mouseover(handleHover).mouseout(handleHover);};})(jQuery);
+
 
     jQuery.extend(jQuery.easing, {
 	easeOutBack: function (x, t, b, c, d, s) {
@@ -124,6 +124,8 @@
 		    zoomContainer.css('width',original.data('originalWidth')+'px');
 		    zoomContainer.css('height', original.data('originalHeight')+'px');
 		    zoomContainer = original.parent().parent();
+
+		    if (bgSizeSupported) var imageContainer = $('<div class="imageContainer"></div>').appendTo(zoomContainer);
                 }
 
 		var alt = original.attr('alt');
@@ -231,30 +233,34 @@
 
 	    // to let the zoom animation run smoother
             // instead of scaling the original image, we use a background-image with background-size scaling
-	    // for supported browsers 
+	    // for supported browsers
+
+	    if (!bgSizeSupported){
+		original.css({'z-index': '105'}).css({
+		    width: dimensions[0] +'px',
+		    height: dimensions[1] + 'px'
+		});
+	    }
 
 	    if (bgSizeSupported) {
-                
+
 		property = "'"+ bgSizeSupported[1]+'background-size'+"'";
 
                 bgSize = dimensions[0]+'px '+dimensions[1]+'px';
 		//zoomContainer.get(0).style.backgroundSize = dimensions[0]+'px '+dimensions[1]+'px';
-		zoomContainer.css({
+
+		imageContainer = zoomContainer.find('.imageContainer');
+
+		imageContainer.css({
                     'background-image':'url('+original.largeImgSrc+')',
                     'background-repeat':'no-repeat',
                     '-moz-background-size': bgSize,
                     '-webkit-background-size': bgSize,
                     '-o-background-size': bgSize,
                     'background-size': bgSize,
+		    'position' : 'absolute',
                     });
 		original.hide();
-	    }
-            
-            if (!bgSizeSupported){
-		original.css({'z-index': '105'}).css({
-		    width: dimensions[0] +'px',
-		    height: dimensions[1] + 'px'
-		});
 	    }
 
 	    zoomContainer.css({'z-index': '100'}).stop(true,false).animate({
@@ -264,18 +270,15 @@
 		height: dimensions[1] + 'px',
 		marginTop: original.data('marginTop') + 'px',
 		marginLeft: original.data('marginLeft') + 'px'
+	    }, opts.speedView+20,opts.easing);
+
+	    imageContainer.show().css({'z-index': '102'}).stop(true,false).animate({
+		width: dimensions[0]  +'px',
+		height: dimensions[1] + 'px',
 	    }, opts.speedView+20,opts.easing,function(){
 		if(caption.text() != '' && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
 	    });
 
-	    
-
-	//    original.css({'z-index': '105'}).stop(true,false).animate({
-	//	width: dimensions[0] +'px',
-	//	height: dimensions[1] + 'px'
-	//    }, opts.speedView,opts.easing,function(){
-	//	if(caption.text() != '' && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
-	//    });
 	},
 	showCaption: function(zoomContainer,dimensions){
 	    var captionpos;
@@ -306,7 +309,7 @@
 	    log('function centerImage()','info');
 	    var viewport = $('body').data('viewport');
             log('Viewport'+viewport);
-            
+
 	    original.data('itemLeft', (viewport[2] + Math.round((viewport[0] - dimensions[2] + opts.breathingSize * 2) / 2)));
 	    original.data('itemTop', (viewport[3] + Math.round((viewport[1] - dimensions[3] + opts.breathingSize * 2) / 2)));
 	    log('itemLeft: ' + original.data('itemLeft'));
@@ -323,7 +326,7 @@
             // get the border width and height of the container
 	    var bw = zoomContainer.outerWidth() - zoomContainer.width();
 	    var bh = zoomContainer.outerHeight() - zoomContainer.height();
-            
+
 
 	    var imageProportion = width / height;
 	    var winProportion = viewport[0] / viewport[1];
@@ -382,6 +385,9 @@
 	    // Remove the caption
 	    zoomContainer.find('.gallerycaption').css('display','none');
 
+	    // get the imageContainer
+	    imageContainer = zoomContainer.find('.imageContainer');
+
 	    if (zoomContainer.hasClass('zoomed')) zoomContainer.css({'z-index': '0'}).removeClass("zoomed").stop(true,false).animate({
 		marginTop: '0',
 		marginLeft: '0',
@@ -398,6 +404,11 @@
 		};
 	    });
 
+	    imageContainer.stop(true,false).animate({
+		width: original.data('originalWidth'),
+		height: original.data('originalHeight'),
+		zIndex: '0'
+	    }, opts.speedRemove,opts.easing);
 
 	    original.css({'z-index': '0'}).stop(true,false).animate({
 		marginTop: '0',
