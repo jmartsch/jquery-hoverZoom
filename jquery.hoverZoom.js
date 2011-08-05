@@ -112,7 +112,7 @@
 
 	    return this.each( function(){
                 var original = $(this);
-
+		original.addClass('original');
 		// Save original attributes in data object
 		original.data('originalWidth',original.width());
 		original.data('originalHeight',original.height());
