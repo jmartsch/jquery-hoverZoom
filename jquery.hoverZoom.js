@@ -276,7 +276,7 @@
 		width: dimensions[0]  +'px',
 		height: dimensions[1] + 'px',
 	    }, opts.speedView+20,opts.easing,function(){
-		if(caption.text() != '' && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
+		if(caption.text() != "undefined" && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
 	    });
 
 	},
@@ -408,7 +408,7 @@
 		width: original.data('originalWidth'),
 		height: original.data('originalHeight'),
 		zIndex: '0'
-	    }, opts.speedRemove,opts.easing);
+	    }, opts.speedRemove,opts.easing,function(){$(this).hide()});
 
 	    original.css({'z-index': '0'}).stop(true,false).animate({
 		marginTop: '0',
