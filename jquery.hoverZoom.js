@@ -10,7 +10,6 @@
 *
 */
 
-
 /**
 * hoverIntent r5 // 2007.03.27 // jQuery 1.1.2+
 * <http://cherne.net/brian/resources/jquery.hoverIntent.html>
@@ -20,6 +19,7 @@
 * @author    Brian Cherne <brian@cherne.net>
 */
 (function($){$.fn.hoverIntent=function(f,g){var cfg={sensitivity:7,interval:100,timeout:0};cfg=$.extend(cfg,g?{over:f,out:g}:f);var cX,cY,pX,pY;var track=function(ev){cX=ev.pageX;cY=ev.pageY;};var compare=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);if((Math.abs(pX-cX)+Math.abs(pY-cY))<cfg.sensitivity){$(ob).unbind("mousemove",track);ob.hoverIntent_s=1;return cfg.over.apply(ob,[ev]);}else{pX=cX;pY=cY;ob.hoverIntent_t=setTimeout(function(){compare(ev,ob);},cfg.interval);}};var delay=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);ob.hoverIntent_s=0;return cfg.out.apply(ob,[ev]);};var handleHover=function(e){var p=(e.type=="mouseover"?e.fromElement:e.toElement)||e.relatedTarget;while(p&&p!=this){try{p=p.parentNode;}catch(e){p=this;}}if(p==this){return false;}var ev=jQuery.extend({},e);var ob=this;if(ob.hoverIntent_t){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);}if(e.type=="mouseover"){pX=ev.pageX;pY=ev.pageY;$(ob).bind("mousemove",track);if(ob.hoverIntent_s!=1){ob.hoverIntent_t=setTimeout(function(){compare(ev,ob);},cfg.interval);}}else{$(ob).unbind("mousemove",track);if(ob.hoverIntent_s==1){ob.hoverIntent_t=setTimeout(function(){delay(ev,ob);},cfg.timeout);}}};return this.mouseover(handleHover).mouseout(handleHover);};})(jQuery);
+
 
     jQuery.extend(jQuery.easing, {
 	easeOutBack: function (x, t, b, c, d, s) {
@@ -96,10 +96,12 @@
 		speedCaption: 800,
 		debug: false,
 		loadingIndicator : 'ajax-loader.gif',
+		loadingIndicatorPos: 'center',
 		easing: 'easeOutQuint',
 		captionHeight: 32,
 		breathingSize: 0,
-		hoverIntent: true
+		hoverIntent: true,
+		useBgImg: true
 	    };
 	    opts = $.extend(defaults, options);
 		    log('Options','info');
@@ -124,6 +126,8 @@
 		    zoomContainer.css('width',original.data('originalWidth')+'px');
 		    zoomContainer.css('height', original.data('originalHeight')+'px');
 		    zoomContainer = original.parent().parent();
+
+		    if (bgSizeSupported && opts.useBgImg) var imageContainer = $('<div class="imageContainer"></div>').appendTo(zoomContainer);
                 }
 
 		var alt = original.attr('alt');
@@ -170,9 +174,32 @@
 		original.largeImgSrc = original.parent('a').attr('href');
 		log('largeImg that should be loaded: '+original.largeImgSrc);
 
-		loading = $('<img src="'+opts.loadingIndicator+'" class="loading" />').insertAfter(original);
+		loading = $('<img src="'+opts.loadingIndicator+'" class="loading" />').appendTo(zoomContainer);
 
-		loading.css({'left': (original.width() / 2 - loading.width() / 2) +'px', 'top': (original.width() / 2 - loading.width() / 2)})
+		if (opts.loadingIndicatorPos =='center'){
+		    loading.css({
+			'left': (original.width() / 2 - loading.width() / 2) +'px',
+			'top': (original.height() / 2 - loading.height() / 2) +'px'
+		    })
+		}
+		else if (opts.loadingIndicatorPos =='tr'){
+		    loading.css({
+			'left': original.width() - loading.width() +'px'
+		    })
+		}
+
+		else if (opts.loadingIndicatorPos =='br'){
+		    loading.css({
+			'left': original.width() - loading.width() +'px',
+			'top': original.height() - loading.height() +'px'
+		    })
+		}
+
+		else if (opts.loadingIndicatorPos =='bl'){
+		    loading.css({
+			'top': original.height() - loading.height() +'px'
+		    })
+		}
 
 		$('<img />').load(function(){
 		    log('ready loading image: '+this.src);
@@ -231,30 +258,31 @@
 
 	    // to let the zoom animation run smoother
             // instead of scaling the original image, we use a background-image with background-size scaling
-	    // for supported browsers 
+	    // for supported browsers
 
-	    if (bgSizeSupported) {
-                
+	    if (!bgSizeSupported |  opts.useBgImg ===false){
+		original.css({'z-index': '105'}).css({
+		    width: dimensions[0] +'px',
+		    height: dimensions[1] + 'px'
+		});
+	    }
+
+	    imageContainer = zoomContainer.find('.imageContainer');
+
+	    if (bgSizeSupported  && opts.useBgImg === true) {
 		property = "'"+ bgSizeSupported[1]+'background-size'+"'";
-
                 bgSize = dimensions[0]+'px '+dimensions[1]+'px';
-		//zoomContainer.get(0).style.backgroundSize = dimensions[0]+'px '+dimensions[1]+'px';
-		zoomContainer.css({
+
+		imageContainer.css({
                     'background-image':'url('+original.largeImgSrc+')',
                     'background-repeat':'no-repeat',
                     '-moz-background-size': bgSize,
                     '-webkit-background-size': bgSize,
                     '-o-background-size': bgSize,
                     'background-size': bgSize,
+		    'position' : 'absolute'
                     });
 		original.hide();
-	    }
-            
-            if (!bgSizeSupported){
-		original.css({'z-index': '105'}).css({
-		    width: dimensions[0] +'px',
-		    height: dimensions[1] + 'px'
-		});
 	    }
 
 	    zoomContainer.css({'z-index': '100'}).stop(true,false).animate({
@@ -265,21 +293,19 @@
 		marginTop: original.data('marginTop') + 'px',
 		marginLeft: original.data('marginLeft') + 'px'
 	    }, opts.speedView+20,opts.easing,function(){
-		if(caption.text() != '' && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
+		if(caption.text() != "undefined" && caption.text() != "" && opts.showCaption === true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
 	    });
 
-	    
+	    imageContainer.show().css({'z-index': '102'}).stop(true,false).animate({
+		width: dimensions[0]  +'px',
+		height: dimensions[1] + 'px'
+	    }, opts.speedView+20,opts.easing);
 
-	//    original.css({'z-index': '105'}).stop(true,false).animate({
-	//	width: dimensions[0] +'px',
-	//	height: dimensions[1] + 'px'
-	//    }, opts.speedView,opts.easing,function(){
-	//	if(caption.text() != '' && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
-	//    });
 	},
 	showCaption: function(zoomContainer,dimensions){
 	    var captionpos;
-	    if (opts.showCaption == true && caption != undefined) {
+	    log('function showCaption()','info');
+	    if (opts.showCaption == true && caption != "undefined") {
 		log('function showCaption()','info');
                 caption = zoomContainer.find('.gallerycaption');
 		captionHeight = caption.outerHeight();
@@ -306,7 +332,7 @@
 	    log('function centerImage()','info');
 	    var viewport = $('body').data('viewport');
             log('Viewport'+viewport);
-            
+
 	    original.data('itemLeft', (viewport[2] + Math.round((viewport[0] - dimensions[2] + opts.breathingSize * 2) / 2)));
 	    original.data('itemTop', (viewport[3] + Math.round((viewport[1] - dimensions[3] + opts.breathingSize * 2) / 2)));
 	    log('itemLeft: ' + original.data('itemLeft'));
@@ -323,7 +349,7 @@
             // get the border width and height of the container
 	    var bw = zoomContainer.outerWidth() - zoomContainer.width();
 	    var bh = zoomContainer.outerHeight() - zoomContainer.height();
-            
+
 
 	    var imageProportion = width / height;
 	    var winProportion = viewport[0] / viewport[1];
@@ -377,10 +403,13 @@
 	    original.attr('src',original.data('image'));
 
 	    // Remove the loading indicator
-	    original.next('.loading').remove();
+	    zoomContainer.find('.loading').remove();
 
 	    // Remove the caption
 	    zoomContainer.find('.gallerycaption').css('display','none');
+
+	    // get the imageContainer
+	    imageContainer = zoomContainer.find('.imageContainer');
 
 	    if (zoomContainer.hasClass('zoomed')) zoomContainer.css({'z-index': '0'}).removeClass("zoomed").stop(true,false).animate({
 		marginTop: '0',
@@ -398,6 +427,11 @@
 		};
 	    });
 
+	    imageContainer.stop(true,false).animate({
+		width: original.data('originalWidth'),
+		height: original.data('originalHeight'),
+		zIndex: '0'
+	    }, opts.speedRemove,opts.easing,function(){$(this).hide()});
 
 	    original.css({'z-index': '0'}).stop(true,false).animate({
 		marginTop: '0',
