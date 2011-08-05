@@ -4,15 +4,15 @@ jQuery hoverZoom
 Features
 --------
     * No need to click. Just hover over the images to enlarge them
-    * Animation of the image. No whitescreen as in most lightboxes
+    * Real Animation of the image. Not only animating a placeholder div as in most lightboxes
     * Support for image captions via alt attribute
     * Centering images in viewport
     * Scale image to fit in viewport
     * Options to control speed of animations
     * complete control of the style with css
     * 10 KB minified
-    * hoverIntent included and optional
-    * Debugging messages in Firebug
+    * hoverIntent included as an option
+    * Debugging messages
     * Free and Open Source
 
 Browser Support (tested versions)
