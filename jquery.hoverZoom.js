@@ -96,10 +96,12 @@
 		speedCaption: 800,
 		debug: false,
 		loadingIndicator : 'ajax-loader.gif',
+		loadingIndicatorPos: 'center',
 		easing: 'easeOutQuint',
 		captionHeight: 32,
 		breathingSize: 0,
-		hoverIntent: true
+		hoverIntent: true,
+		useBgImg: true
 	    };
 	    opts = $.extend(defaults, options);
 		    log('Options','info');
@@ -125,7 +127,7 @@
 		    zoomContainer.css('height', original.data('originalHeight')+'px');
 		    zoomContainer = original.parent().parent();
 
-		    if (bgSizeSupported) var imageContainer = $('<div class="imageContainer"></div>').appendTo(zoomContainer);
+		    if (bgSizeSupported && opts.useBgImg) var imageContainer = $('<div class="imageContainer"></div>').appendTo(zoomContainer);
                 }
 
 		var alt = original.attr('alt');
@@ -172,9 +174,32 @@
 		original.largeImgSrc = original.parent('a').attr('href');
 		log('largeImg that should be loaded: '+original.largeImgSrc);
 
-		loading = $('<img src="'+opts.loadingIndicator+'" class="loading" />').insertAfter(original);
+		loading = $('<img src="'+opts.loadingIndicator+'" class="loading" />').appendTo(zoomContainer);
 
-		loading.css({'left': (original.width() / 2 - loading.width() / 2) +'px', 'top': (original.width() / 2 - loading.width() / 2)})
+		if (opts.loadingIndicatorPos =='center'){
+		    loading.css({
+			'left': (original.width() / 2 - loading.width() / 2) +'px',
+			'top': (original.height() / 2 - loading.height() / 2) +'px'
+		    })
+		}
+		else if (opts.loadingIndicatorPos =='tr'){
+		    loading.css({
+			'left': original.width() - loading.width() +'px'
+		    })
+		}
+
+		else if (opts.loadingIndicatorPos =='br'){
+		    loading.css({
+			'left': original.width() - loading.width() +'px',
+			'top': original.height() - loading.height() +'px'
+		    })
+		}
+
+		else if (opts.loadingIndicatorPos =='bl'){
+		    loading.css({
+			'top': original.height() - loading.height() +'px'
+		    })
+		}
 
 		$('<img />').load(function(){
 		    log('ready loading image: '+this.src);
@@ -235,21 +260,18 @@
             // instead of scaling the original image, we use a background-image with background-size scaling
 	    // for supported browsers
 
-	    if (!bgSizeSupported){
+	    if (!bgSizeSupported |  opts.useBgImg ===false){
 		original.css({'z-index': '105'}).css({
 		    width: dimensions[0] +'px',
 		    height: dimensions[1] + 'px'
 		});
 	    }
 
-	    if (bgSizeSupported) {
+	    imageContainer = zoomContainer.find('.imageContainer');
 
+	    if (bgSizeSupported  && opts.useBgImg === true) {
 		property = "'"+ bgSizeSupported[1]+'background-size'+"'";
-
                 bgSize = dimensions[0]+'px '+dimensions[1]+'px';
-		//zoomContainer.get(0).style.backgroundSize = dimensions[0]+'px '+dimensions[1]+'px';
-
-		imageContainer = zoomContainer.find('.imageContainer');
 
 		imageContainer.css({
                     'background-image':'url('+original.largeImgSrc+')',
@@ -258,7 +280,7 @@
                     '-webkit-background-size': bgSize,
                     '-o-background-size': bgSize,
                     'background-size': bgSize,
-		    'position' : 'absolute',
+		    'position' : 'absolute'
                     });
 		original.hide();
 	    }
@@ -270,19 +292,20 @@
 		height: dimensions[1] + 'px',
 		marginTop: original.data('marginTop') + 'px',
 		marginLeft: original.data('marginLeft') + 'px'
-	    }, opts.speedView+20,opts.easing);
+	    }, opts.speedView+20,opts.easing,function(){
+		if(caption.text() != "undefined" && caption.text() != "" && opts.showCaption === true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
+	    });
 
 	    imageContainer.show().css({'z-index': '102'}).stop(true,false).animate({
 		width: dimensions[0]  +'px',
-		height: dimensions[1] + 'px',
-	    }, opts.speedView+20,opts.easing,function(){
-		if(caption.text() != "undefined" && opts.showCaption == true) $.fn.hoverZoom('showCaption',zoomContainer,dimensions);
-	    });
+		height: dimensions[1] + 'px'
+	    }, opts.speedView+20,opts.easing);
 
 	},
 	showCaption: function(zoomContainer,dimensions){
 	    var captionpos;
-	    if (opts.showCaption == true && caption != undefined) {
+	    log('function showCaption()','info');
+	    if (opts.showCaption == true && caption != "undefined") {
 		log('function showCaption()','info');
                 caption = zoomContainer.find('.gallerycaption');
 		captionHeight = caption.outerHeight();
@@ -380,7 +403,7 @@
 	    original.attr('src',original.data('image'));
 
 	    // Remove the loading indicator
-	    original.next('.loading').remove();
+	    zoomContainer.find('.loading').remove();
 
 	    // Remove the caption
 	    zoomContainer.find('.gallerycaption').css('display','none');

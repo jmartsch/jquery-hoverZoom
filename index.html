@@ -36,8 +36,8 @@
             <p>Actions speak louder than words. So here is what you get (just hover over the images):</p>
             <ul class="thumb">
                 <li><a href="images/1.jpg"><img alt="Images can have captions" src="images/1_thumb.jpg" /></a></li>
-                <li class="noborder"><a href="images/2.jpg"><img alt="Can be styled with css" src="images/2_thumb.jpg" /></a></li>
-                <li class="redshadow"><a href="images/3.jpg"><img src="images/3_thumb.jpg" alt="images are scaled to fit into the viewport" /></a></li>
+                <li class="noborder"><a href="images/2.jpg"><img alt="zoomContainer can be styled with CSS" src="images/2_thumb.jpg" /></a></li>
+                <li class="redshadow"><a href="images/3.jpg"><img src="images/3_thumb.jpg" alt="Images are scaled and centered to the viewport" /></a></li>
                 <li><a href="images/bigimage.jpg"><img src="images/bigimage_thumb.jpg" alt="Images are preloaded and then the animation starts"/></a></li>
                 <li><a href="images/5.jpg"><img src="images/5_thumb.jpg" /></a></li>
                 <li><a href="images/6.jpg"><img src="images/6_thumb.jpg" /></a></li>
@@ -51,7 +51,7 @@
             <h2>Features</h2>
             <ul>
                 <li>No need to click. Just hover over the images to enlarge them</li>
-                <li>Animation of the image. No whitescreen as in most lightboxes</li>
+                <li>Real Animation of the image. Not only animating a placeholder div as in most lightboxes</li>
                 <li>Support for image captions via alt attribute</li>
                 <li>Centering images in viewport</li>
                 <li>Scale image to fit in viewport</li>
@@ -59,7 +59,7 @@
                 <li>Complete control of the style with css</li>
                 <li>10 KB minified</li>
                 <li>hoverIntent included as an option</li>
-                <li>Debugging messages in Firebug</li>
+                <li>Debugging message</li>
                 <li>Free and Open Source</li>
             </ul>
             <h2>Supported browsers</h2>
@@ -102,10 +102,12 @@
                     <dt>speedCaption (<strong>800</strong>)</dt><dd>A number determining how long the zoom in animation for captions will run.</dd>
                     <dt>debug (<strong>true</strong> | false)</dt><dd>A boolean determining if debugging messages should be send to a console.</dd>
                     <dt>loadingIndicator (<strong>ajax-loader.gif</strong>)</dt><dd>Path to an loadingIndicator image.</dd>
+                    <dt>loadingIndicatorPos (<strong>center</strong> | tl | tr | br | bl)</dt><dd>Position to display the loadingIndicator (topleft, center, topright, etc.)</dd>
                     <dt>easing (swing | linear | <strong>easeOutQuint</strong>)</dt>A string indicating which easing function to use for the animation. Supports the easing plugin<dd></dd>
                     <dt>captionHeight (<strong>32</strong>)</dt><dd>A number determining the height of the caption</dd>
                     <dt>breathingSize (<strong>0</strong>)</dt><dd>A number determining margins around the zoomed image </dd>
                     <dt>hoverIntent (<strong>true</strong> | false)</dt><dd>A boolean determining whether to use the integrated hoverIntent Plugin or not.</dd>
+                    <dt>useBgImg(<strong>false</strong>)</dt><dd>use a background image instead of zooming the real image</dd>
                 </dl>
             <h2>Bugs/Issues</h2>
             <p>
@@ -130,7 +132,7 @@
     <script src="jquery.hoverZoom.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-                $('.thumb img').hoverZoom({speedView:600,speedRemove:400,showCaption:true,speedCaption:1500,debug:true,hoverIntent: false});
+                $('.thumb img').hoverZoom({speedView:600, speedRemove:400, showCaption:true, speedCaption:600, debug:true, hoverIntent: true, loadingIndicatorPos: 'center'});
         });
     </script>
 </body>

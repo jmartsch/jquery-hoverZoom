@@ -1,9 +1,8 @@
 .thumb, .thumb  {float: left;list-style: none;margin: 0;  }
 .thumb a img{border: 0;}
-.thumb li {margin: 0; float: left; position: relative; width: 110px; height: 110px; margin-right: 10px;}
-.thumb li img { padding: 0px; position: absolute; -ms-interpolation-mode: bicubic; width: 110px; height: 110px}
+.thumb li {margin: 0; float: left; position: relative; width: 100px; height: 100px; margin-right: 10px;}
+.thumb li img { padding: 0px; position: absolute; -ms-interpolation-mode: bicubic; width: 100px; height: 100px}
 .thumb li img.hover {border: none; }
-.thumb li .loading{position: absolute; }
 
 .gallerycaption{
     position:absolute;
@@ -27,16 +26,11 @@
 .loading{
     width: 32px !important;
     height: 32px !important;
+    position: relative;
 }
 .zoomContainer{
     position: absolute;
     padding: 0;
-}
-
-.zoomContainer img{
-    /*position: relative !important;*/
-    left: 0 !important;
-    top: 0 !important;
 }
 
 .zoomContainer .original{
@@ -45,6 +39,4 @@
 }
 .trigger{
     position: absolute !important;
-}
-.trigger img{
 }
