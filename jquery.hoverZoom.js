@@ -101,7 +101,7 @@
 		captionHeight: 32,
 		breathingSize: 0,
 		hoverIntent: true,
-		useBgImg: true
+		useBgImg: false
 	    };
 	    opts = $.extend(defaults, options);
 		    log('Options','info');
