@@ -1,0 +1,14 @@
+.thumb, .thumb  {float: left;list-style: none;margin: 0;  }
+.thumb a img{border: 0;}
+.thumb li {margin: 0; float: left; position: relative; width: 100px; height: 100px; margin-right: 10px;}
+.thumb li img { padding: 0px; position: absolute; -ms-interpolation-mode: bicubic; width: 100px; height: 100px}
+.thumb li img.hover {border: none; }
+
+.gallerycaption{ position:absolute;font-weight:600;padding-top: 10px;text-align:center;font-size: 13px;overflow: hidden;height: 2.4em;display: none;background: white;}
+
+.zoomed {-webkit-box-shadow: -5px -5px 35px #000000;-moz-box-shadow: 5px 5px 35px #000000;box-shadow: 5px 5px 35px #000000;border: 10px solid white; }
+.loading{width: 32px !important;height: 32px !important;position: relative;}
+.zoomContainer{position: absolute;padding: 0;}
+
+.zoomContainer .original{left: 0 !important;top: 0 !important;}
+.trigger{position: absolute !important;}

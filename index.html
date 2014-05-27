@@ -14,9 +14,6 @@
     <meta name="author" content="Jens Martsch">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
     <link  href="//fonts.googleapis.com/css?family=Cabin:bold" rel="stylesheet" type="text/css" >
 
     <link rel="stylesheet" href="css/style.css?v=2">
@@ -35,9 +32,9 @@
             <h2>The demo</h2>
             <p>Actions speak louder than words. So here is what you get (just hover over the images):</p>
             <ul class="thumb">
-                <li><a href="images/1.jpg"><img alt="Images can have captions" src="images/1_thumb.jpg" /></a></li>
-                <li class="noborder"><a href="images/2.jpg"><img alt="zoomContainer can be styled with CSS" src="images/2_thumb.jpg" /></a></li>
-                <li class="redshadow"><a href="images/3.jpg"><img src="images/3_thumb.jpg" alt="Images are scaled and centered to the viewport" /></a></li>
+                <li><a href="images/1.jpg" data-link="mylink.html"><img alt="Images can have captions" src="images/1_thumb.jpg" /></a></li>
+                <li class="noborder"><a href="images/2.jpg" data-link="mylink.html"><img alt="zoomContainer can be styled with CSS" src="images/2_thumb.jpg" /></a></li>
+                <li class="redshadow"><a href="images/3.jpg" data-link="mylink.html"><img src="images/3_thumb.jpg" alt="Images are scaled and centered to the viewport" /></a></li>
                 <li><a href="images/bigimage.jpg"><img src="images/bigimage_thumb.jpg" alt="Images are preloaded and then the animation starts"/></a></li>
                 <li><a href="images/5.jpg"><img src="images/5_thumb.jpg" /></a></li>
                 <li><a href="images/6.jpg"><img src="images/6_thumb.jpg" /></a></li>
@@ -126,13 +123,13 @@
     </div> <!-- end of #container -->
 
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
-    <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
-    <script src="js/modernizr-1.6.min.js"></script>
-    <script src="jquery.hoverZoom.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!--<script src="js/modernizr/modernizr.js"></script>-->
+    <!--<script src="js/jquery.transit/jquery.transit.js"></script>-->
+    <script src="jquery.hoverZoom.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-                $('.thumb img').hoverZoom({speedView:600, speedRemove:400, showCaption:true, speedCaption:600, debug:true, hoverIntent: true, loadingIndicatorPos: 'center'});
+                $('.thumb img').hoverZoom({speedView:600, speedRemove:400, showCaption:true, speedCaption:600, debug:true, hoverIntent: true, loadingIndicatorPos: 'center', useBgImg : true});
         });
     </script>
 </body>
