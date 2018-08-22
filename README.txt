@@ -22,7 +22,7 @@ Browser Support (tested versions)
     * Safari (Tested in Version 5.0.3)
     * Opera (Tested in version 11.0)
 
-Please feel free to test it in other versions/browsers and notify me if it`s working or not.
+This module is no longer maintained. So there is no support.
 
 Dependencies
 ------------
